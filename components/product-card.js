@@ -1,20 +1,27 @@
 import { Text, View, Image, Pressable, StyleSheet } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
-const ProductCard = ({ title, description }) => (
-  <View style={styles.productContainer}>
-    <View style={styles.productImageContainer}>
-      <Image
-        style={styles.productImage}
-        source={require("../assets/img/cafe.png")}
-      />
+const ProductCard = ({ title, description }) => {
+  const navigation = useNavigation();
+  return (
+    <View style={styles.productContainer}>
+      <View style={styles.productImageContainer}>
+        <Image
+          style={styles.productImage}
+          source={require("../assets/img/cafe.png")}
+        />
+      </View>
+      <Text style={styles.productTitle}>{title}</Text>
+      <Text style={styles.productDescription}>{description}</Text>
+      <Pressable
+        style={styles.productBtn}
+        onPress={() => navigation.navigate("Product")}
+      >
+        <Text style={styles.productTextBtn}>Plus de détails</Text>
+      </Pressable>
     </View>
-    <Text style={styles.productTitle}>{title}</Text>
-    <Text style={styles.productDescription}>{description}</Text>
-    <Pressable style={styles.productBtn}>
-      <Text style={styles.productTextBtn}>Plus de détails</Text>
-    </Pressable>
-  </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   userContainer: {
