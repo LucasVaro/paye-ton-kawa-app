@@ -1,40 +1,32 @@
-import { Text, SafeAreaView, View, StyleSheet } from "react-native";
-import { ProductCard } from "../components";
+import React from "react";
+import { Text, View, Image, Pressable, StyleSheet } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { HomeScreenNavigationProp } from "../types/types";
 
-const list = [
-  {
-    title: "Caramel Macchiato",
-    description: "Lait, caramel, chantilly & expresso",
-  },
-  {
-    title: "Caramel Macchiato",
-    description: "Lait, caramel, chantilly & expresso",
-  },
-  {
-    title: "Caramel Macchiato",
-    description: "Lait, caramel, chantilly & expresso",
-  },
-  {
-    title: "Caramel Macchiato",
-    description: "Lait, caramel, chantilly & expresso",
-  },
-];
+interface ProductCardProps {
+  title: string;
+  description: string;
+}
 
-const Home = () => {
+const ProductCard = ({ title, description }: ProductCardProps) => {
+  const navigation = useNavigation<HomeScreenNavigationProp>();
   return (
-    <SafeAreaView>
-      <View style={styles.userContainer}>
-        <Text style={styles.userText}>Hello Lucas</Text>
+    <View style={styles.productContainer}>
+      <View style={styles.productImageContainer}>
+        <Image
+          style={styles.productImage}
+          source={require("../assets/img/cafe.png")}
+        />
       </View>
-      <View style={styles.listProductContainer}>
-        {list.map((product) => (
-          <ProductCard
-            title={product.title}
-            description={product.description}
-          />
-        ))}
-      </View>
-    </SafeAreaView>
+      <Text style={styles.productTitle}>{title}</Text>
+      <Text style={styles.productDescription}>{description}</Text>
+      <Pressable
+        style={styles.productBtn}
+        onPress={() => navigation.navigate("Product", { title, description })}
+      >
+        <Text style={styles.productTextBtn}>Plus de détails</Text>
+      </Pressable>
+    </View>
   );
 };
 
@@ -46,7 +38,7 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    borderBottomRightRadius: "60",
+    borderBottomRightRadius: 60,
   },
   userText: {
     color: "#FFF",
@@ -116,4 +108,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Home;
+export default ProductCard;

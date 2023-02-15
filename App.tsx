@@ -1,4 +1,6 @@
+import React from "react";
 import AppLoading from "expo-app-loading";
+import { StatusBar } from "expo-status-bar";
 import {
   useFonts,
   Montserrat_100Thin,
@@ -23,7 +25,7 @@ import {
 import Router from "./router";
 
 export default function App() {
-  let [fontsLoaded] = useFonts({
+  const [fontsLoaded] = useFonts({
     Montserrat_100Thin,
     Montserrat_200ExtraLight,
     Montserrat_300Light,
@@ -44,10 +46,13 @@ export default function App() {
     Montserrat_900Black_Italic,
   });
   if (!fontsLoaded) {
-    return <AppLoading />
+    return <AppLoading />;
   } else {
     return (
+      <>
         <Router />
+        <StatusBar style="auto" />
+      </>
     );
   }
 }
