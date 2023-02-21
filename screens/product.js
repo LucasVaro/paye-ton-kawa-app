@@ -6,8 +6,10 @@ import {
   SafeAreaView,
   StyleSheet,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 const Product = ({ title, description }) => {
+  const navigation = useNavigation();
   return (
     <SafeAreaView>
       <View style={styles.productContainer}>
@@ -25,7 +27,7 @@ const Product = ({ title, description }) => {
         </Text>
         <Pressable
           style={styles.productBtn}
-          onPress={() => navigation.navigate("Product")}
+          onPress={() => navigation.navigate("ARView")}
         >
           <Text style={styles.productTextBtn}>Voir en Réalité Augmentée</Text>
         </Pressable>
@@ -55,7 +57,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: 250,
     height: 250,
-    borderRadius: 150
+    borderRadius: 150,
   },
   productTitle: {
     fontFamily: "Montserrat_700Bold",
@@ -72,7 +74,7 @@ const styles = StyleSheet.create({
   productImage: {
     width: 350,
     height: 350,
-    marginTop: -100
+    marginTop: -100,
   },
   productBtn: {
     backgroundColor: "#008248",
