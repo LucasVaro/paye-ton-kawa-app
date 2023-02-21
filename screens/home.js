@@ -1,4 +1,5 @@
 import { Text, SafeAreaView, View, StyleSheet } from "react-native";
+import { useRoute } from "@react-navigation/native";
 import { ProductCard } from "../components";
 
 const list = [
@@ -21,10 +22,12 @@ const list = [
 ];
 
 const Home = () => {
+  const route = useRoute();
+
   return (
     <SafeAreaView>
       <View style={styles.userContainer}>
-        <Text style={styles.userText}>Hello Lucas</Text>
+        <Text style={styles.userText}>Hello Lucas {route.params.data}</Text>
       </View>
       <View style={styles.listProductContainer}>
         {list.map((product) => (

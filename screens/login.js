@@ -6,10 +6,11 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { AnimatedCheckIcon } from "../components";
-import { BarCodeScanner } from 'expo-barcode-scanner';
 
 const Login = () => {
+  const navigation = useNavigation();
   const [mailSended, setMailSended] = useState(false);
   const [email, setEmail] = useState();
 
@@ -21,8 +22,12 @@ const Login = () => {
     }
   };
 
-  const resendMail = async () => {
+  const resendMail = () => {
     setMailSended(false);
+  };
+
+  const handleScan = () => {
+    navigation.navigate("Scanner");
   };
 
   return (
@@ -48,7 +53,7 @@ const Login = () => {
             Scanner le QR code que vous avez reçu par mail pour vous connecter
           </Text>
           <AnimatedCheckIcon isChecked={mailSended} />
-          <TouchableOpacity style={styles.button} onPress={sendMail}>
+          <TouchableOpacity style={styles.button} onPress={handleScan}>
             <Text style={styles.textButton}>Scanner le QR code</Text>
           </TouchableOpacity>
           <TouchableOpacity
