@@ -1,0 +1,45 @@
+name: pull-request-workflow
+
+on:
+    push:
+        branches-ignore:
+            - master
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                node-version: [16.x]
+        steps:
+            - uses: actions/checkout@v3
+            - name: Cache node modules
+              id: cache-npm
+              uses: actions/cache@v3
+              env:
+                  cache-name: cache-node-modules
+              with:
+                  path: ~/.npm
+                  key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+                  restore-keys: |
+                      ${{ runner.os }}-build-${{ env.cache-name }}-
+                      ${{ runner.os }}-build-
+                      ${{ runner.os }}-
+
+            - uses: actions/setup-node@v3
+              with:
+                  node-version: '16.x'
+
+            - name: Install dependencies
+              run: npm install
+            - name: Run tests
+              run: npm run test:coverage
+              continue-on-error: true
+            - name: Building Application
+              run: npm run build --if-present
+            - name: GitHub Checks
+              uses: LouisBrunner/checks-action@v1.6.0
+              if: always()
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
+                  name: Status
+                  conclusion: ${{ job.status }}
