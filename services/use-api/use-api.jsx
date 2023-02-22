@@ -1,8 +1,7 @@
 import Axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { apiUrl } from "../../utils/env";
 
-const API_URL = apiUrl;
+const API_URL = "http://192.168.1.19:8888/paye-ton-kawa-api-php/api";
 
 export const instance = Axios.create({
   baseUrl: API_URL,
@@ -14,7 +13,9 @@ export default function useApi() {
     try {
       const res = await instance.get(API_URL + path, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          jwt: token || undefined,
+          Accept: "*/*",
+          "Content-Type": "application/x-www-form-urlencoded",
         },
       });
       return res;
@@ -28,7 +29,9 @@ export default function useApi() {
     try {
       const res = await instance.post(API_URL + path, body, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          jwt: token || undefined,
+          Accept: "*/*",
+          "Content-Type": "application/x-www-form-urlencoded",
         },
       });
       return res;
@@ -42,7 +45,9 @@ export default function useApi() {
     try {
       const res = await instance.put(API_URL + path, body, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          jwt: token || undefined,
+          Accept: "*/*",
+          "Content-Type": "application/x-www-form-urlencoded",
         },
       });
       return res;
@@ -56,7 +61,9 @@ export default function useApi() {
     try {
       const res = await instance.delete(API_URL + path, body, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          jwt: token || undefined,
+          Accept: "*/*",
+          "Content-Type": "application/x-www-form-urlencoded",
         },
       });
       return res;

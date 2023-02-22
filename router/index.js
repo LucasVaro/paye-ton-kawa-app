@@ -14,7 +14,7 @@ const Router = () => (
         component={Product}
         options={{ headerShown: false }}
       />
-      {/* <Screen name="ARView" component={ARView} options={{ headerShown: false }} /> */}
+      <Screen name="ARView" component={ARView} options={{ headerShown: false }} />
     </Navigator>
   </NavigationContainer>
 );

@@ -12,10 +12,12 @@ const ProductCard = ({ title, description }) => {
         />
       </View>
       <Text style={styles.productTitle}>{title}</Text>
-      <Text style={styles.productDescription}>{description}</Text>
+      <Text numberOfLines={3} ellipsizeMode="tail" style={styles.productDescription}>{description}</Text>
       <Pressable
         style={styles.productBtn}
-        onPress={() => navigation.navigate("Product")}
+        onPress={() =>
+          navigation.navigate("Product", { name: title, description })
+        }
       >
         <Text style={styles.productTextBtn}>Plus de détails</Text>
       </Pressable>

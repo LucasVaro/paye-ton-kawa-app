@@ -8,15 +8,27 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { AnimatedCheckIcon } from "../components";
+import { useLogin } from "../services";
 
 const Login = () => {
+  const { getKey } = useLogin();
   const navigation = useNavigation();
   const [mailSended, setMailSended] = useState(false);
   const [email, setEmail] = useState();
 
   const sendMail = async () => {
     try {
-      setMailSended(true);
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (email && emailRegex.test(email)) {
+        const params = `mail=${email}`;
+        const { data } = await getKey(params);
+        if (data.mailSend) {
+          setMailSended(true);
+        }
+      } else {
+        alert("Veuillez renseigner un email correctfr");
+      }
     } catch (e) {
       console.error(e);
     }

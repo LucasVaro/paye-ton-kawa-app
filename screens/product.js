@@ -6,10 +6,14 @@ import {
   SafeAreaView,
   StyleSheet,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
-const Product = ({ title, description }) => {
+const Product = () => {
   const navigation = useNavigation();
+  const route = useRoute();
+
+  const name = route.params.name;
+  const description = route.params.description;
   return (
     <SafeAreaView>
       <View style={styles.productContainer}>
@@ -21,9 +25,9 @@ const Product = ({ title, description }) => {
             />
           </View>
         </View>
-        <Text style={styles.productTitle}>Café Macchiato</Text>
+        <Text style={styles.productTitle}>{name}</Text>
         <Text style={styles.productDescription}>
-          Lait, caramel, chantilly & expresso
+          {description}
         </Text>
         <Pressable
           style={styles.productBtn}
@@ -39,6 +43,7 @@ const Product = ({ title, description }) => {
 const styles = StyleSheet.create({
   productContainer: {
     display: "flex",
+    alignItems: "center",
     flexDirection: "column",
     margin: 10,
   },

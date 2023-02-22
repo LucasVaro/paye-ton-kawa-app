@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Scanner = () => {
   const navigation = useNavigation();
@@ -17,8 +18,9 @@ const Scanner = () => {
     getBarCodeScannerPermissions();
   }, []);
 
-  const handleBarCodeScanned = ({ type, data }) => {
+  const handleBarCodeScanned = async ({ data }) => {
     setScanned(true);
+    await AsyncStorage.setItem("token", data);
     navigation.navigate("Home", { data });
   };
 
@@ -35,11 +37,7 @@ const Scanner = () => {
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={StyleSheet.absoluteFillObject}
       />
-      {scanned && (
-        <View style={styles.scanAgain} onTouchEnd={() => setScanned(false)}>
-          <Text style={styles.scanAgainText}>Scanner un autre code</Text>
-        </View>
-      )}
+      <View style={styles.target}></View>
     </View>
   );
 };
@@ -48,18 +46,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
-    justifyContent: "flex-end",
+    justifyContent: "center",
+    alignItems: "center",
   },
-  scanAgain: {
-    position: "absolute",
-    bottom: 0,
-    width: "100%",
-    padding: 15,
-    backgroundColor: "white",
-    opacity: 0.7,
-  },
-  scanAgainText: {
-    textAlign: "center",
+  target: {
+    width: 200,
+    height: 200,
+    borderWidth: 2,
+    borderColor: "white",
   },
 });
 

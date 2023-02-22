@@ -1,42 +1,47 @@
-import { Text, SafeAreaView, View, StyleSheet } from "react-native";
-import { useRoute } from "@react-navigation/native";
-import { ProductCard } from "../components";
-
-const list = [
-  {
-    title: "Caramel Macchiato",
-    description: "Lait, caramel, chantilly & expresso",
-  },
-  {
-    title: "Caramel Macchiato",
-    description: "Lait, caramel, chantilly & expresso",
-  },
-  {
-    title: "Caramel Macchiato",
-    description: "Lait, caramel, chantilly & expresso",
-  },
-  {
-    title: "Caramel Macchiato",
-    description: "Lait, caramel, chantilly & expresso",
-  },
-];
+import { useState, useContext, useEffect } from "react";
+import { Text, SafeAreaView, ScrollView, View, StyleSheet } from "react-native";
+import { ProductCard, NotAuthorized } from "../components";
+import { LoginContext } from "../context/login";
+import { useProducts } from "../services";
 
 const Home = () => {
-  const route = useRoute();
+  const { token } = useContext(LoginContext);
+  const [list, setList] = useState(undefined);
+  const { getProducts } = useProducts();
+
+  const initProducts = async () => {
+    try {
+      const { data } = await getProducts();
+      setList(data);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  useEffect(() => {
+    initProducts();
+  }, []);
 
   return (
     <SafeAreaView>
-      <View style={styles.userContainer}>
-        <Text style={styles.userText}>Hello Lucas {route.params.data}</Text>
-      </View>
-      <View style={styles.listProductContainer}>
-        {list.map((product) => (
-          <ProductCard
-            title={product.title}
-            description={product.description}
-          />
-        ))}
-      </View>
+      {token && (
+        <ScrollView>
+          <View style={styles.userContainer}>
+            <Text style={styles.userText}>Bienvenue</Text>
+          </View>
+          <View style={styles.listProductContainer}>
+            {list &&
+              list.map((product) => (
+                <ProductCard
+                  title={product?.name}
+                  description={product?.details?.description}
+                />
+              ))}
+            {!list && <Text style={styles.textLoading}>Chargement...</Text>}
+          </View>
+        </ScrollView>
+      )}
+      {!token && <NotAuthorized />}
     </SafeAreaView>
   );
 };
@@ -117,6 +122,7 @@ const styles = StyleSheet.create({
     color: "#FFF",
     fontSize: 16,
   },
+  textLoading: { textAlign: "center", marginTop: 50 },
 });
 
 export default Home;
