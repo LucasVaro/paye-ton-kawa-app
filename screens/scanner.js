@@ -1,10 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { LoginContext } from "../context/login";
 
 const Scanner = () => {
+  const { setToken } = useContext(LoginContext);
   const navigation = useNavigation();
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
@@ -21,6 +23,7 @@ const Scanner = () => {
   const handleBarCodeScanned = async ({ data }) => {
     setScanned(true);
     await AsyncStorage.setItem("token", data);
+    setToken(data);
     navigation.navigate("Home", { data });
   };
 
