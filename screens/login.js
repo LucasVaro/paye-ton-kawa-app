@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import {
   Text,
   TextInput,
@@ -9,8 +9,10 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { AnimatedCheckIcon } from "../components";
 import { useLogin } from "../services";
+import { LoginContext } from "../context/login";
 
 const Login = () => {
+  const { token } = useContext(LoginContext);
   const { getKey } = useLogin();
   const navigation = useNavigation();
   const [mailSended, setMailSended] = useState(false);
@@ -41,6 +43,12 @@ const Login = () => {
   const handleScan = () => {
     navigation.navigate("Scanner");
   };
+
+  useEffect(() => {
+    if (token) {
+      navigation.navigate("Home");
+    }
+  }, [token]);
 
   return (
     <SafeAreaView style={styles.body}>

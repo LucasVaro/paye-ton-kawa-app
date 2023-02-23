@@ -1,75 +1,57 @@
-import React, { useRef, useEffect } from "react";
-import { View, StyleSheet } from "react-native";
-import { AR } from "expo-three";
-import { GLView } from "expo-gl";
-import * as Three from "three";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, Text, Image, View } from "react-native";
+import { Camera } from "expo-camera";
 
-const ARScene = () => {
-  const arSession = useRef();
-  const glView = useRef();
-  const renderer = useRef();
-
-  const init = async () => {
-    await AR.initAsync();
-    console.log("eeeeerrrrrr", AR);
-  };
+export default function App() {
+  const [hasPermission, setHasPermission] = useState(null);
+  const [type, setType] = useState(Camera.Constants.Type.back);
 
   useEffect(() => {
-    init();
+    (async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      setHasPermission(status === "granted");
+    })();
   }, []);
 
-  const onContextCreate = async ({ gl, scale: pixelRatio, width, height }) => {
-    renderer.current = new Three.WebGLRenderer({
-      antialias: true,
-      alpha: true,
-      canvas: {
-        width,
-        height,
-        style: { flex: 1 },
-        addEventListener: () => {},
-        removeEventListener: () => {},
-      },
-      context: gl,
-    });
-    renderer.current.setPixelRatio(pixelRatio);
-    renderer.current.setSize(width, height);
-
-    const scene = new Three.Scene();
-    const camera = new Three.PerspectiveCamera(75, width / height, 0.1, 1000);
-    const geometry = new Three.SphereGeometry(1, 32, 32);
-    const material = new Three.MeshBasicMaterial({ color: 0xff0000 });
-    const sphere = new Three.Mesh(geometry, material);
-
-    camera.position.z = 5;
-
-    scene.add(sphere);
-
-    arSession.current = await glView.current.startARSessionAsync();
-    const { trackingState } = await arSession.current.getCurrentFrame();
-    if (trackingState === AR.TrackingState.NORMAL) {
-      renderer.current.render(scene, camera);
-    }
-  };
-
+  if (hasPermission === null) {
+    return <View />;
+  }
+  if (hasPermission === false) {
+    return <Text>No access to camera</Text>;
+  }
   return (
     <View style={styles.container}>
-      <GLView
-        ref={glView}
-        style={styles.glView}
-        onContextCreate={onContextCreate}
-        arTrackingConfiguration={AR.TrackingConfigurations.World}
-      />
+      <Camera style={styles.camera} type={type}>
+        <View style={styles.overlay}>
+          <Image
+            source={require("../assets/cafe.png")}
+            style={styles.overlayImage}
+          />
+        </View>
+      </Camera>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: "column",
   },
-  glView: {
+  camera: {
     flex: 1,
   },
+  overlay: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  overlayImage: {
+    width: 200,
+    height: 200,
+  },
+  glView: {
+    width: "100%",
+    height: "100%",
+  },
 });
-
-export default ARScene;

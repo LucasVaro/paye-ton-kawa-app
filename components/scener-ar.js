@@ -14,6 +14,8 @@
 //   ViroText,
 // } from '@viro-community/react-viro';
 // import { StyleSheet } from 'react-native';
+// import EmojiHeart from '../assets/res/emoji_heart_anim/emoji_heart_anim.vrx';
+
 
 // class SceneAR extends Component {
 
@@ -107,8 +109,8 @@
 //           textAlign="center"
 //           text="Click to Place"
 //         />
-//         <ViroImage rotation={[-90, 0, 0]} visible={this.state.foundPlane} source={require('./assets/res/tracking_diffuse_2.png')} />
-//         <ViroImage rotation={[-90, 0, 0]} visible={!this.state.foundPlane} source={require('./assets/res/tracking_diffuse.png')} />
+//         <ViroImage rotation={[-90, 0, 0]} visible={this.state.foundPlane} source={require('../assets/res/tracking_diffuse_2.png')} />
+//         <ViroImage rotation={[-90, 0, 0]} visible={!this.state.foundPlane} source={require('../assets/res/tracking_diffuse.png')} />
 //       </ViroNode>
 //     )
 //   }
@@ -137,10 +139,10 @@
 //           <Viro3DObject
 //             visible={this.state.isReady}
 //             position={[0, .5, 0]}
-//             source={require('./assets/res/emoji_heart_anim/emoji_heart_anim.vrx')}
+//             source={EmojiHeart}
 //             resources={[
-//               require('./assets/res/emoji_heart_anim/emoji_heart.png'),
-//               require('./assets/res/emoji_heart_anim/emoji_heart_specular.png'),
+//               require('../assets/res/emoji_heart_anim/emoji_heart.png'),
+//               require('../assets/res/emoji_heart_anim/emoji_heart_specular.png'),
 //             ]}
 //             animation={{ name: "02", delay: 0, loop: true, run: true }}
 //             type="VRX" />
