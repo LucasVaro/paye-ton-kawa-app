@@ -21,6 +21,7 @@ import {
   Montserrat_900Black_Italic,
 } from "@expo-google-fonts/montserrat";
 import Router from "./router";
+import { LoginContextProvider } from "./context/login";
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -44,10 +45,12 @@ export default function App() {
     Montserrat_900Black_Italic,
   });
   if (!fontsLoaded) {
-    return <AppLoading />
+    return <AppLoading />;
   } else {
     return (
+      <LoginContextProvider>
         <Router />
+      </LoginContextProvider>
     );
   }
 }

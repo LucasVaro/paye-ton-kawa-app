@@ -6,8 +6,14 @@ import {
   SafeAreaView,
   StyleSheet,
 } from "react-native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
-const Product = ({ title, description }) => {
+const Product = () => {
+  const navigation = useNavigation();
+  const route = useRoute();
+
+  const name = route.params.name;
+  const description = route.params.description;
   return (
     <SafeAreaView>
       <View style={styles.productContainer}>
@@ -19,13 +25,13 @@ const Product = ({ title, description }) => {
             />
           </View>
         </View>
-        <Text style={styles.productTitle}>Café Macchiato</Text>
+        <Text style={styles.productTitle}>{name}</Text>
         <Text style={styles.productDescription}>
-          Lait, caramel, chantilly & expresso
+          {description}
         </Text>
         <Pressable
           style={styles.productBtn}
-          onPress={() => navigation.navigate("Product")}
+          onPress={() => navigation.navigate("ARView")}
         >
           <Text style={styles.productTextBtn}>Voir en Réalité Augmentée</Text>
         </Pressable>
@@ -37,6 +43,7 @@ const Product = ({ title, description }) => {
 const styles = StyleSheet.create({
   productContainer: {
     display: "flex",
+    alignItems: "center",
     flexDirection: "column",
     margin: 10,
   },
@@ -55,7 +62,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: 250,
     height: 250,
-    borderRadius: 150
+    borderRadius: 150,
   },
   productTitle: {
     fontFamily: "Montserrat_700Bold",
@@ -72,7 +79,7 @@ const styles = StyleSheet.create({
   productImage: {
     width: 350,
     height: 350,
-    marginTop: -100
+    marginTop: -100,
   },
   productBtn: {
     backgroundColor: "#008248",
